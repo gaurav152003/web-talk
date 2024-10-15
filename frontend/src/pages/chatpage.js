@@ -10,11 +10,16 @@ const Chatpage = () => {
   const { user } = ChatState();
 
   useEffect(() => {
-    // Trigger a refresh when the user state changes (like after login)
     if (user) {
-      setFetchAgain((prev) => !prev);  // Use functional update to toggle fetchAgain
+      const hasRefreshed = localStorage.getItem("hasRefreshed");
+      if (!hasRefreshed) {
+        localStorage.setItem("hasRefreshed", "true");
+        window.location.reload();
+      } else {
+        setFetchAgain((prev) => !prev);  // Proceed without further reloads
+      }
     }
-  }, [user]); // Only depend on user
+  }, [user]);
 
   return (
     <div style={{ width: "100%" }}>
